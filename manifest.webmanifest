@@ -1,0 +1,11 @@
+{
+  "name": "Catálogo OPB",
+  "short_name": "Catálogo OPB",
+  "start_url": "./#app",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

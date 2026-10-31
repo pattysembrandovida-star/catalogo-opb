@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo OPB</title>
+
+<!-- Ícono para iPhone y Android -->
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Catálogo OPB">
+<meta name="theme-color" content="#ffffff">
+
+<style>
+  body { margin:0; min-height:100vh; display:flex; flex-direction:column;
+         align-items:center; justify-content:center; text-align:center;
+         font-family:-apple-system, Roboto, Arial, sans-serif; padding:24px;
+         box-sizing:border-box; background:#ffffff; color:#222; }
+  img.logo { width:120px; height:120px; border-radius:24px; }
+  h1 { font-size:1.4rem; margin:20px 0 8px; }
+  p { margin:6px 0; color:#555; max-width:320px; }
+  .boton { display:block; width:100%; max-width:300px; box-sizing:border-box;
+           margin-top:14px; padding:14px 20px; border-radius:12px;
+           font-size:1.05rem; text-decoration:none; cursor:pointer;
+           font-family:inherit; }
+  .principal { background:#2e7d32; color:#fff; border:2px solid #2e7d32; margin-top:28px; }
+  .secundario { background:#fff; color:#2e7d32; border:2px solid #2e7d32; }
+  .nota { font-size:.85rem; color:#777; margin-top:6px; }
+
+  /* Ventana con instrucciones */
+  #ventana { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55);
+             align-items:center; justify-content:center; padding:20px; z-index:10; }
+  #ventana.abierta { display:flex; }
+  .caja { background:#fff; border-radius:16px; padding:22px; max-width:340px;
+          width:100%; text-align:left; }
+  .caja h2 { margin:0 0 12px; font-size:1.15rem; text-align:center; }
+  .caja ol { margin:0 0 14px; padding-left:20px; color:#333; line-height:1.5; }
+  .caja .boton { margin-top:8px; }
+</style>
+</head>
+<body>
+  <img class="logo" src="icon.png" alt="Logo">
+  <h1>Catálogo OPB</h1>
+  <p>Productos de valor agregado de Othón P. Blanco · Sembrando Vida</p>
+
+  <a id="ver" class="boton principal" href="#">Ver catálogo</a>
+  <button id="agregar" class="boton secundario" type="button">Agregar a mi pantalla de inicio</button>
+  <p class="nota">Esta segunda opción es para el personal que quiera tenerlo como app.</p>
+
+  <div id="ventana">
+    <div class="caja">
+      <h2>Agregar a pantalla de inicio</h2>
+      <ol id="pasos"></ol>
+      <a id="ver2" class="boton principal" href="#">Entrar al catálogo</a>
+      <button id="cerrar" class="boton secundario" type="button">Cerrar</button>
+    </div>
+  </div>
+
+<script>
+  // CAMBIA SOLO ESTA DIRECCIÓN por el link publicado de tu Google Sites
+  var SITIO = "https://sites.google.com/view/TU-SITIO";
+
+  document.getElementById("ver").href = SITIO;
+  document.getElementById("ver2").href = SITIO;
+
+  var abiertoComoApp =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+  var esMovil =
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    window.matchMedia("(pointer: coarse)").matches;
+
+  // Laptop, o abierto desde el acceso directo: va directo al sitio
+  if (!esMovil || abiertoComoApp || location.hash === "#app") {
+    location.replace(SITIO);
+  }
+
+  var esIphone = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  var pasos = esIphone
+    ? ["Abre esta página en <b>Safari</b>.",
+       "Toca el botón <b>Compartir</b> (cuadro con flecha hacia arriba).",
+       "Elige <b>Agregar a pantalla de inicio</b>.",
+       "Toca <b>Agregar</b>."]
+    : ["Abre esta página en <b>Chrome</b>.",
+       "Toca el menú <b>⋮</b> (arriba a la derecha).",
+       "Elige <b>Agregar a pantalla principal</b> o <b>Instalar app</b>.",
+       "Confirma con <b>Agregar</b>."];
+
+  document.getElementById("pasos").innerHTML =
+    pasos.map(function (p) { return "<li>" + p + "</li>"; }).join("");
+
+  document.getElementById("agregar").onclick = function () {
+    // Marca el link para que el acceso directo entre directo al sitio
+    history.replaceState(null, "", "#app");
+    document.getElementById("ventana").classList.add("abierta");
+  };
+
+  document.getElementById("cerrar").onclick = function () {
+    document.getElementById("ventana").classList.remove("abierta");
+  };
+</script>
+</body>
+</html>
